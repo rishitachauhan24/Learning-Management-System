@@ -2,7 +2,11 @@ const mongoose = require("mongoose")
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI)
+        const uri = process.env.MONGO_URI || process.env.MONGODB_URI || process.env['MONGO-URI'];
+        if (!uri) {
+            throw new Error("MONGO_URI check environment variables on your deployment platform");
+        }
+        await mongoose.connect(uri)
 
         console.log("MongoDB Connected Successfully")
     } catch (error) {

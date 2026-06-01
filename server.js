@@ -1,11 +1,12 @@
-const express = require("express")
 const dotenv = require("dotenv")
+dotenv.config()
+
+const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
 
 const connectDB = require("./config/db")
-
-dotenv.config()
+const errorHandler = require("./middleware/errorMiddleware")
 
 connectDB()
 
@@ -25,7 +26,9 @@ app.get("/", (req, res) => {
     res.send("LMS Backend Running")
 })
 
-const PORT = process.env.PORT || 2000
+app.use(errorHandler)
+
+const PORT = process.env.PORT || 10000
 
 app.listen(PORT, () => {
     console.log(`Server Running on Port ${PORT}`)
